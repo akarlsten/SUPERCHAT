@@ -18,6 +18,16 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('New user connected')
+
+  socket.emit('newMessage', {
+    from: 'hii',
+    text: 'dsf',
+    createdAt: 'sdf'
+  })
+
+  socket.on('createMessage', (message) => {
+    console.log(message)
+  })
   
   socket.on('disconnect', (socket) => {
     console.log('User disconnected')
