@@ -2,20 +2,47 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/bulma.css">
 </head>
 <body>
-  <p>Welcome to chat!!!</p>
-
-  <ul id="messages"></ul>
-
-  <form id="message-form">
-    <input name="message" type="text" placeholder="Message" />
-    <button>Send</button>
-  </form>
-  <button id="send-location">Send Location</button>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/libs/jquery-3.2.1.min.js"></script>
-  <script src="/js/index.js"></script>
+<section class="section">
+    <div class="container">
+      <h1 class="title">
+        Welcome to chat!!!
+      </h1>
+    </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns">
+        <div class="column is-half">
+          <ul id="messages"></ul>
+        </div>
+         <div class="column">
+          <form id="message-form">
+          <div class="field has-addons">
+            <div class="control">
+            <input class="input" name="message" type="text" placeholder="Message">
+            </div>
+            <div class="control">
+            <button class="button is-primary">Send</button>
+          </div>          
+            </div>
+          </form>
+          </div>
+          <div class="column">
+          <div class="field">
+            <div class="control">
+                <button class="button is-link" id="send-location">Send Location</button>
+            </div>
+          </div>
+    </div>
+  </div>
+</section>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/libs/jquery-3.2.1.min.js"></script>
+<script src="/js/index.js"></script>
+</div>
 </body>
 </html>
