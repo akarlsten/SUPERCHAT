@@ -5,7 +5,7 @@ const path = require('path')
 const http = require('http')
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000
-const {generateMessage, generateLocationMessage} = require('./utils/message')
+const { generateMessage, generateLocationMessage } = require('./utils/message')
 
 var app = express()
 var server = http.createServer(app)
@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   app.render('index.html')
 })
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('New user connected')
 
   socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'))
@@ -27,19 +27,21 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message)
     io.emit('newMessage', generateMessage(message.from, message.text))
-    callback('This is from the server')
+    callback()
   })
 
   socket.on('createLocationMessage', (coords, callback) => {
-    console.log(coords)
-    io.emit('newLocationMessage', generateLocationMessage(coords.from, coords.latitude, coords.longitude))
+    console.log('createLocationMessage', coords)
+    io.emit(
+      'newLocationMessage',
+      generateLocationMessage(coords.from, coords.latitude, coords.longitude)
+    )
   })
-  
-  socket.on('disconnect', (socket) => {
+
+  socket.on('disconnect', socket => {
     console.log('User disconnected')
   })
 })
-
 
 server.listen(port, () => {
   console.log(`Server up on port: ${port}\nCTRL+C to shut down..`)

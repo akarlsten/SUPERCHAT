@@ -1,48 +1,35 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/css/bulma.css">
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
-<section class="section">
-    <div class="container">
-      <h1 class="title">
-        Welcome to chat!!!
-      </h1>
-    </div>
-</section>
-<section class="section">
-  <div class="container">
-    <div class="columns">
-        <div class="column is-half">
-          <ul id="messages"></ul>
-        </div>
-         <div class="column">
-          <form id="message-form">
-          <div class="field has-addons">
-            <div class="control">
-            <input class="input" name="message" type="text" placeholder="Message">
-            </div>
-            <div class="control">
-            <button class="button is-primary">Send</button>
-          </div>          
-            </div>
-          </form>
-          </div>
-          <div class="column">
-          <div class="field">
-            <div class="control">
-                <button class="button is-link" id="send-location">Send Location</button>
-            </div>
-          </div>
+
+<body class="chat">
+
+  <div class="chat__sidebar">
+    <h3>People</h3>
+    <div id="users"></div>
+  </div>
+
+  <div class="chat__main">
+    <ol id="messages" class="chat__messages"></ol>
+
+    <div class="chat__footer">
+      <form id="message-form">
+        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
+        <button>Send</button>
+      </form>
+      <button id="send-location">Send location</button>
     </div>
   </div>
-</section>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/libs/jquery-3.2.1.min.js"></script>
-<script src="/js/index.js"></script>
-</div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/jquery-3.2.1.min.js"></script>
+  <script src="/js/index.js"></script>
 </body>
+
 </html>
