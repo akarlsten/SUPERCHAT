@@ -9,18 +9,18 @@ socket.on('disconnect', function() {
 })
 
 socket.on('newMessage', function(message) {
-  console.log('newMessage', message)
+  var formattedTime = moment(message.createdAt).format('hh:mm:ss')
   var li = $('<li></li>')
-  li.text(`${message.from}: ${message.text}`)
+  li.text(`[${formattedTime}] ${message.from}: ${message.text}`)
 
   $('#messages').append(li)
 })
 
 socket.on('newLocationMessage', function(message) {
-  console.log('newLocationMessage', message)
+  var formattedTime = moment(message.createdAt).format('hh:mm:ss')
   var li = $('<li></li>')
   var a = $('<a target="_blank">My location</a>')
-  li.text(`${message.from}: `)
+  li.text(`[${formattedTime}] ${message.from}: `)
   a.attr('href', message.url)
   li.append(a)
 
@@ -42,6 +42,23 @@ $('#message-form').on('submit', function(e) {
       messageTextbox.val('')
     }
   )
+})
+
+$('#message-form input').keyup(function(e) {
+  var messageButton = $('#send-message')
+  var empty = false
+
+  $('#message-form input').each(function() {
+    if ($(this).val().length === 0) {
+      empty = true
+    }
+  })
+
+  if (empty) {
+    messageButton.attr('disabled', 'disabled')
+  } else {
+    messageButton.removeAttr('disabled')
+  }
 })
 
 var locationButton = $('#send-location')

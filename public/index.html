@@ -11,7 +11,8 @@
 <body class="chat">
 
   <div class="chat__sidebar">
-    <h3>People</h3>
+    <h3>SUPERCHAT</h3>
+    <hr>
     <div id="users"></div>
   </div>
 
@@ -19,9 +20,9 @@
     <ol id="messages" class="chat__messages"></ol>
 
     <div class="chat__footer">
-      <form id="message-form">
+      <form id="message-form" data-emojiable="true">
         <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-        <button>Send</button>
+        <button id="send-message" disabled>Send</button>
       </form>
       <button id="send-location">Send location</button>
     </div>
@@ -29,6 +30,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/jquery-3.2.1.min.js"></script>
+  <script src="/js/libs/moment.js"></script>
   <script src="/js/index.js"></script>
 </body>
 
