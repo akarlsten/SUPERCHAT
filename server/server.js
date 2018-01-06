@@ -5,7 +5,11 @@ const path = require('path')
 const http = require('http')
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000
-const { generateMessage, generateLocationMessage } = require('./utils/message')
+const {
+  generateMessage,
+  generateLocationMessage,
+  generateServerMessage
+} = require('./utils/message')
 
 var app = express()
 var server = http.createServer(app)
@@ -20,9 +24,9 @@ app.get('/', (req, res) => {
 io.on('connection', socket => {
   console.log('New user connected')
 
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'))
+  socket.emit('serverMessage', generateServerMessage('Welcome to the chat app! 🤗'))
 
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined!'))
+  socket.broadcast.emit('serverMessage', generateServerMessage('New user joined! 😲'))
 
   socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message)

@@ -8,23 +8,41 @@ socket.on('disconnect', function() {
   console.log('Disconnected from server')
 })
 
-socket.on('newMessage', function(message) {
-  var formattedTime = moment(message.createdAt).format('hh:mm:ss')
-  var li = $('<li></li>')
-  li.text(`[${formattedTime}] ${message.from}: ${message.text}`)
+socket.on('serverMessage', function(message) {
+  var li = $('<li class="server-message"></li>')
+  li.text(`${message.text}`)
 
   $('#messages').append(li)
 })
 
-socket.on('newLocationMessage', function(message) {
-  var formattedTime = moment(message.createdAt).format('hh:mm:ss')
-  var li = $('<li></li>')
-  var a = $('<a target="_blank">My location</a>')
-  li.text(`[${formattedTime}] ${message.from}: `)
-  a.attr('href', message.url)
-  li.append(a)
+socket.on('newMessage', function(message) {
+  var template = $('#message-template').html()
+  var formattedTime = moment(message.createdAt)
+    .locale('sv')
+    .format('HH:mm:ss')
 
-  $('#messages').append(li)
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
+
+  $('#messages').append(html)
+})
+
+socket.on('newLocationMessage', function(message) {
+  var template = $('#location-message-template').html()
+  var formattedTime = moment(message.createdAt)
+    .locale('sv')
+    .format('HH:mm:ss')
+
+  var html = Mustache.render(template, {
+    from: message.from,
+    url: message.url,
+    createdAt: formattedTime
+  })
+
+  $('#messages').append(html)
 })
 
 $('#message-form').on('submit', function(e) {
