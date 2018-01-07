@@ -1,3 +1,34 @@
+var socket = io()
+
+socket.on('updateRoomList', function(rooms) {
+  //hide the entire window if empty
+  if (rooms.length === 0) {
+    $('.popular-rooms').hide()
+  } else {
+    $('.popular-rooms').show()
+  }
+
+  //add popular rooms
+  var ul = $('<ul></ul>')
+
+  rooms.forEach(function(room) {
+    var html = `🏠 ${room.room} - ${room.users} 😄`
+    ul.append($('<li></li>').append(html))
+  })
+
+  $('.rooms').html(ul)
+
+  var datalist = $('<datalist id="roomselect"></datalist>')
+
+  rooms.forEach(function(room) {
+    var opt = $(`<option value="${room.room}">`)
+
+    datalist.append(opt)
+  })
+
+  $('[list="roomselect"]').html(datalist)
+})
+
 $('form').keyup(function(e) {
   var empty = false
 

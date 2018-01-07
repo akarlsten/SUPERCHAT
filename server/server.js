@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', socket => {
-  console.log('New user connected')
+  io.emit('updateRoomList', users.getRoomlist())
 
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
@@ -35,6 +35,8 @@ io.on('connection', socket => {
     socket.join(params.room)
     users.removeUser(socket.id) //remove any previous
     users.addUser(socket.id, params.name, params.room) //add back in
+
+    io.emit('updateRoomList', users.getRoomlist())
 
     io.to(params.room).emit('updateUserList', users.getUserlist(params.room)) // find and send users
 
@@ -71,7 +73,7 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id)
-
+    io.emit('updateRoomList', users.getRoomlist())
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserlist(user.room))
       io.to(user.room).emit('serverMessage', generateServerMessage(`${user.name} left!`, '😯'))

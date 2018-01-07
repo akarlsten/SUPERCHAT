@@ -24,7 +24,7 @@
       </div>
       <div class="form-field">
         <label>Room</label>
-        <input type="text" name="room">
+        <input type="text" name="room" list="roomselect">
       </div>
       <div class="form-field">
         <button disabled>Join</button>
@@ -32,6 +32,15 @@
     </form>
   </div>
 
+  <div class="centered-form__form popular-rooms">
+    <div class="form-field">
+      <h3>🎇 Popular</h3>
+    </div>
+    <div class="rooms">
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
   <script src="/js/libs/jquery-3.2.1.min.js"></script>
   <script src="/js/index.js"></script>
 </body>

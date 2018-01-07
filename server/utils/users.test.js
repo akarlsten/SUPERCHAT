@@ -94,4 +94,19 @@ describe('Users', () => {
 
     expect(userList).toEqual(['Adami'])
   })
+
+  it('should list all rooms', () => {
+    var roomList = users.getRoomlist()
+
+    expect(roomList).toEqual([
+      {
+        room: 'Roombo',
+        users: 2
+      },
+      {
+        room: 'Roombox',
+        users: 1
+      }
+    ])
+  })
 })

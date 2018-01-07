@@ -67,6 +67,7 @@ button:disabled {
 }
 .centered-form {
   display: flex;
+  flex-flow: row wrap;
   align-items: center;
   height: 100vh;
   width: 100vw;
@@ -81,7 +82,7 @@ button:disabled {
   border-radius: 4px;
   padding: 0 20px;
   margin: 20px;
-  width: 230px;
+  width: auto;
   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 .form-field {
@@ -224,6 +225,26 @@ h5 {
 .emoji {
   text-decoration: none;
   font-size: 1.4rem;
+}
+.popular-rooms {
+  display: none;
+}
+.rooms {
+  margin-bottom: 20px;
+}
+.popular {
+  margin-bottom: 10px;
+}
+.popular label {
+  font-size: 1.1rem;
+}
+.popular hr {
+  border-bottom: 2px #000;
+}
+.popular-rooms li {
+  list-style-type: none;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 @media (max-width: 600px) {
   * {

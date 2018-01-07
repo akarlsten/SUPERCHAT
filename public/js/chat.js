@@ -60,15 +60,6 @@ socket.on('updateUserList', function(users) {
 })
 
 socket.on('serverMessage', function(message) {
-  console.log(message)
-  // var li = $('<li><span class="server-message"></span></li>')
-  // var emoji = $('<span class="emoji"></span>')
-  // emoji.html(`${message.emoji}`)
-  // li.text(`${message.text}`)
-  // var final = li.append(emoji)
-
-  // $('#messages').append(final)
-  // scrollToBottom()
   var template = $('#server-template').html()
   var html = Mustache.render(template, {
     text: message.text,
@@ -174,7 +165,7 @@ locationButton.on('click', function() {
 
 //find and set Room, no need to ask the server
 $(document).ready(function() {
-  params = $.deparam(window.location.search)
+  var params = $.deparam(window.location.search)
   var template = $('#room-template').html()
 
   var html = Mustache.render(template, {
