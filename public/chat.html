@@ -5,7 +5,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata:700|Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:700" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
@@ -15,7 +16,12 @@
 <body class="chat">
 
   <div class="chat__sidebar">
-    <h3>💥SUPERCHAT</h3>
+    <a href="/">
+      <h3>💥SUPERCHAT</h3>
+    </a>
+    <a href="">
+    <div id="room"></div>
+    </a>
     <hr>
     <div id="users"></div>
   </div>
@@ -26,13 +32,42 @@
     <div class="chat__footer">
       <form id="message-form">
         <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-        <button id="send-message" disabled>Send</button>
+        <button id="send-message" alt="Send" disabled>💬</button>
       </form>
-      <button id="send-location">Send location</button>
+      <button id="send-location">📍🗺️ ⟶ 💬</button>
     </div>
   </div>
 
   <!--- TEMPLATES -->
+
+  <script id="room-template" type="text/template">
+    <hr>
+    <h5>🏡 {{room}}</h5>
+  </script>
+
+  <!-- <script id="users-template" type="text/template">
+  {{#users}}
+    <li>
+      <div class="profile">
+        <span class="initial">
+          {{initial}}
+        </span>
+      </div>
+      {{user}}
+    </li>
+  {{/users}}
+  </script> -->
+
+  <script id="server-template" type="text/template">
+    <li class="server-message">
+      <span class="server-message-text">
+        {{text}}
+      </span>
+      <span class="emoji">
+        {{emoji}}
+      </span>
+    </li>
+  </script>
 
   <script id="message-template" type="text/template">
     <li class="message">
@@ -53,7 +88,7 @@
             <span>Location | {{createdAt}}</span>
           </div>
           <div class="message__body">
-            <a href="{{url}}" class="map-link" target="_blank">🗺️</a>
+            <a href="{{url}}" class="map-link" target="_blank">🗺️🔗</a>
           </div>
         </li>
   </script>
@@ -62,7 +97,10 @@
   <script src="/js/libs/jquery-3.2.1.min.js"></script>
   <script src="/js/libs/moment.js"></script>
   <script src="/js/libs/mustache.js"></script>
+  <script src="/js/libs/deparam.js"></script>
+  <script src="/js/libs/jquery.easyModal.js"></script>
   <script src="/js/chat.js"></script>
+
 </body>
 
 </html>

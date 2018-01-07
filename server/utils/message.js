@@ -8,8 +8,8 @@ var generateMessage = (from, text) => {
   }
 }
 
-var generateServerMessage = text => {
-  return { text }
+var generateServerMessage = (text, emoji) => {
+  return { text, emoji }
 }
 
 var generateLocationMessage = (from, latitude, longitude) => {

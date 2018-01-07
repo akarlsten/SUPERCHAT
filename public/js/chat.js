@@ -18,19 +18,64 @@ function scrollToBottom() {
 }
 
 // Event listeners
+
 socket.on('connect', function() {
-  console.log('Connected to server')
+  var params = $.deparam(window.location.search)
+
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err)
+      window.location.href = '/'
+    } else {
+    }
+  })
 })
 
 socket.on('disconnect', function() {
   console.log('Disconnected from server')
 })
 
-socket.on('serverMessage', function(message) {
-  var li = $('<li class="server-message"></li>')
-  li.text(`${message.text}`)
+socket.on('updateUserList', function(users) {
+  // var template = $('#users-template').html()
+  // var initial
+  // var user = users.forEach(function(user) {
+  //   initial = user[0]
+  //   return user
+  // })
 
-  $('#messages').append(li)
+  // var html = Mustache.render(template, {
+  //   user: user,
+  //   initial: initial
+  // })
+
+  // $('#users ul').append(html)
+  var ul = $('<ul></ul>')
+
+  users.forEach(function(user) {
+    var html = `<div class="profile"><span class="initial">${user[0].toUpperCase()}</span></div> ${user}`
+    ul.append($('<li></li>').append(html))
+  })
+
+  $('#users').html(ul)
+})
+
+socket.on('serverMessage', function(message) {
+  console.log(message)
+  // var li = $('<li><span class="server-message"></span></li>')
+  // var emoji = $('<span class="emoji"></span>')
+  // emoji.html(`${message.emoji}`)
+  // li.text(`${message.text}`)
+  // var final = li.append(emoji)
+
+  // $('#messages').append(final)
+  // scrollToBottom()
+  var template = $('#server-template').html()
+  var html = Mustache.render(template, {
+    text: message.text,
+    emoji: message.emoji
+  })
+
+  $('#messages').append(html)
   scrollToBottom()
 })
 
@@ -74,7 +119,6 @@ $('#message-form').on('submit', function(e) {
   socket.emit(
     'createMessage',
     {
-      from: 'User',
       text: messageTextbox.val()
     },
     function() {
@@ -89,7 +133,11 @@ $('#message-form input').keyup(function(e) {
   var empty = false
 
   $('#message-form input').each(function() {
-    if ($(this).val().length === 0) {
+    if (
+      $(this)
+        .val()
+        .trim().length === 0
+    ) {
       empty = true
     }
   })
@@ -107,20 +155,31 @@ locationButton.on('click', function() {
     return alert('Your browser doesn\'t support geolocation')
   }
 
-  locationButton.attr('disabled', 'disabled').text('Sending..')
+  locationButton.attr('disabled', 'disabled').text('📍🗺️ ⏳ 💬')
 
   navigator.geolocation.getCurrentPosition(
     function(position) {
-      locationButton.removeAttr('disabled').text('Send Location')
+      locationButton.removeAttr('disabled').text('📍🗺️ ⟶ 💬')
       socket.emit('createLocationMessage', {
-        from: 'User',
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       })
     },
     function() {
-      locationButton.removeAttr('disabled', null).text('Send Location')
+      locationButton.removeAttr('disabled', null).text('📍🗺️ ⟶ 💬')
       alert('Unable to fetch location..')
     }
   )
+})
+
+//find and set Room, no need to ask the server
+$(document).ready(function() {
+  params = $.deparam(window.location.search)
+  var template = $('#room-template').html()
+
+  var html = Mustache.render(template, {
+    room: params.room
+  })
+
+  $('#room').append(html)
 })

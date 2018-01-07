@@ -1,9 +1,19 @@
+@font-face {
+  font-family: CourierPrimeSans;
+  src: url('/fonts/CourierPrimeSansBold.woff') format('woff');
+  src: url('/fonts/CourierPrimeSansBold.ttf') format('truetype');
+  font-weight: 700;
+}
+a {
+  text-decoration: none;
+}
 button,
 button:hover {
   border: none;
   border-radius: 3px;
   color: #fff;
   padding: 10px;
+  font-weight: 600;
 }
 .chat__messages,
 .chat__sidebar ul {
@@ -28,7 +38,12 @@ ul {
 h3 {
   font-weight: 600;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+}
+h5 {
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.1rem;
 }
 hr {
   border-bottom: 1px !important;
@@ -56,7 +71,8 @@ button:disabled {
   height: 100vh;
   width: 100vw;
   justify-content: center;
-  background-color: #ffc1d5;
+  /* background-color: #ffc1d5; */
+  background-color: rgb(252, 118, 162);
   background-image: url('/img/i-like-food.svg');
 }
 .centered-form__form {
@@ -78,9 +94,6 @@ button:disabled {
   font-weight: 600;
   display: block;
   margin-bottom: 7px;
-}
-.form-field button {
-  font-weight: 600;
 }
 .form-field input,
 .form-field select {
@@ -108,32 +121,64 @@ button:disabled {
   background: -ms-linear-gradient(125deg, rgba(252, 118, 162, 1) 0, rgba(255, 16, 96, 1) 100%);
   background: linear-gradient(325deg, rgba(252, 118, 162, 1) 0, rgba(255, 16, 96, 1) 100%);
 }
-.chat__footer,
-.chat__sidebar li {
+.chat__footer {
   background: #ffc1d5;
   padding: 10px;
 }
-.chat__sidebar h3 {
+.chat__sidebar h3,
+h5 {
   color: #fff;
   margin: 10px 20px;
   text-align: left;
 }
 .chat__sidebar li {
-  border: 1px solid #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 10px;
   border-radius: 5px;
-  margin: 10px;
+  margin: 10px 10px 10px 0px;
 }
+.chat__sidebar li .profile {
+  display: inline;
+  padding: 10px;
+  margin-right: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.chat__sidebar li .profile .initial {
+  font-family: CourierPrimeSans, monospace;
+  color: rgb(255, 16, 96);
+  position: relative;
+  top: 2px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
 .chat__main {
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  background-image: url('/img/i-like-food-2.svg');
 }
 .chat__messages {
   flex-grow: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 10px;
+  /* background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 16, 96, 0) 0 100%);
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right bottom,
+    color-stop(0, rgba(255, 255, 255, 1)),
+    color-stop(100%, rgba(252, 118, 162, 0))
+  );
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 16, 96, 0) 100%);
+  background: -o-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 16, 96, 0) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 255, 255, 1) 50%, rgba(255, 16, 96, 0) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 1) 50%, rgba(255, 16, 96, 0) 100%); */
 }
 .chat__footer {
   display: flex;
@@ -166,11 +211,19 @@ button:disabled {
   color: #999;
 }
 .server-message {
-  margin: 0;
+  margin-bottom: 10px;
   padding: 0;
+}
+.server-message-text {
   font-weight: 600;
   font-size: 1.1rem;
   color: rgba(255, 16, 96, 1);
+  text-decoration: underline wavy;
+  text-underline-position: under;
+}
+.emoji {
+  text-decoration: none;
+  font-size: 1.4rem;
 }
 @media (max-width: 600px) {
   * {
