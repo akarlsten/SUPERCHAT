@@ -24,9 +24,13 @@ app.get('/', (req, res) => {
   app.render('index.html')
 })
 
-io.on('connection', socket => {
-  io.emit('updateRoomList', users.getRoomlist())
+//send room updates only to the lobby
+const lobby = io.of('/lobby')
+lobby.on('connection', socket => {
+  lobby.emit('updateRoomList', users.getRoomlist())
+})
 
+io.on('connection', socket => {
   socket.on('join', (params, callback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback('Name and room name are required..')
@@ -36,7 +40,7 @@ io.on('connection', socket => {
     users.removeUser(socket.id) //remove any previous
     users.addUser(socket.id, params.name, params.room) //add back in
 
-    io.emit('updateRoomList', users.getRoomlist())
+    lobby.emit('updateRoomList', users.getRoomlist()) //send to lobby when someone joins a room
 
     io.to(params.room).emit('updateUserList', users.getUserlist(params.room)) // find and send users
 
@@ -73,7 +77,7 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id)
-    io.emit('updateRoomList', users.getRoomlist())
+    lobby.emit('updateRoomList', users.getRoomlist()) //send to lobby when someone disconnects
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserlist(user.room))
       io.to(user.room).emit('serverMessage', generateServerMessage(`${user.name} left!`, '😯'))

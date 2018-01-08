@@ -246,6 +246,27 @@ h5 {
   font-weight: 700;
   margin-bottom: 5px;
 }
+.modal {
+  position: fixed;
+  justify-content: center;
+  /* background-color: #ffc1d5; */
+  background-color: rgb(252, 118, 162);
+  background-image: url('/img/i-like-food-3.svg');
+  display: flex;
+  flex-flow: row wrap;
+  top: 0;
+  left: 0;
+  align-items: center;
+  z-index: 10;
+  height: 100vh;
+  width: 100%;
+  opacity: 0.9;
+  /* display: none; */
+}
+.modal-box {
+  z-index: 20;
+  opacity: 1;
+}
 @media (max-width: 600px) {
   * {
     font-size: 1rem;

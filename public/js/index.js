@@ -1,4 +1,4 @@
-var socket = io()
+var socket = io('/lobby')
 
 socket.on('updateRoomList', function(rooms) {
   //hide the entire window if empty
@@ -29,7 +29,7 @@ socket.on('updateRoomList', function(rooms) {
   $('[list="roomselect"]').html(datalist)
 })
 
-$('form').keyup(function(e) {
+var formValidator = function() {
   var empty = false
 
   $('input').each(function() {
@@ -51,27 +51,18 @@ $('form').keyup(function(e) {
       .removeAttr('disabled')
       .text('Join')
   }
+}
+
+$('form').keyup(function() {
+  formValidator()
 })
 
 // also check after going back in the browser (fields will be filled)
-$(document).ready(function(e) {
-  var empty = false
+$(document).ready(function() {
+  formValidator()
+})
 
-  $('input').each(function() {
-    if (
-      $(this)
-        .val()
-        .trim().length === 0
-    ) {
-      empty = true
-    }
-  })
-
-  if (empty) {
-    $('button')
-      .attr('disabled', 'disabled')
-      .text('Enter Name and Room')
-  } else {
-    $('button').removeAttr('disabled')
-  }
+//also check after picking from list
+$('[name="room"]').on('input', function() {
+  formValidator()
 })
