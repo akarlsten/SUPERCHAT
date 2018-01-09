@@ -66,3 +66,16 @@ $(document).ready(function() {
 $('[name="room"]').on('input', function() {
   formValidator()
 })
+
+// set and get cookie for username
+
+$('form').on('submit', function() {
+  Cookies.set('screenname', $('[name=name]').val())
+})
+
+$(document).ready(function() {
+  if (Cookies.get('screenname')) {
+    $('[name=name]').val(Cookies.get('screenname'))
+    $('[name=room]').focus()
+  }
+})

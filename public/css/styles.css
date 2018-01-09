@@ -4,14 +4,6 @@
   src: url('/fonts/CourierPrimeSansBold.ttf') format('truetype');
   font-weight: 700;
 }
-@keyframes animatedBackground {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 100% 0;
-  }
-}
 a {
   text-decoration: none;
   cursor: pointer;
@@ -84,7 +76,6 @@ button:disabled {
   /* background-color: #ffc1d5; */
   background-color: rgb(252, 118, 162);
   background-image: url('/img/i-like-food.svg');
-  animation: animatedBackground 40s linear infinite;
 }
 .centered-form__form {
   background: rgb(255, 255, 255);
