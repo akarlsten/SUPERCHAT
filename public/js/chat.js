@@ -174,3 +174,47 @@ $(document).ready(function() {
 
   $('#room').append(html)
 })
+
+// room-changer modal stuff
+
+$('.modal-box input').keyup(function(e) {
+  var roomButton = $('.modal-box button')
+  var empty = false
+
+  $('.modal-box input').each(function() {
+    if (
+      $(this)
+        .val()
+        .trim().length === 0
+    ) {
+      empty = true
+    }
+  })
+
+  if (empty) {
+    roomButton.attr('disabled', 'disabled')
+  } else {
+    roomButton.removeAttr('disabled')
+  }
+})
+
+$('#room').on('click', function() {
+  $('#room-modal').css('display', 'flex')
+  $('#room-form input').focus()
+})
+
+$('#room-modal').on('click', function(event) {
+  if (!$(event.target).closest('.modal-box').length > 0) {
+    $('#room-modal').css('display', 'none')
+  }
+})
+
+$('#room-form').on('submit', function(e) {
+  e.preventDefault()
+  var params = $.deparam(window.location.search)
+  var roomString = $('[name=room]').val()
+
+  params.room = encodeURIComponent(roomString)
+
+  window.location.search = `?name=${params.name}&room=${params.room}`
+})

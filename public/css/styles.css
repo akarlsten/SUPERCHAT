@@ -4,8 +4,17 @@
   src: url('/fonts/CourierPrimeSansBold.ttf') format('truetype');
   font-weight: 700;
 }
+@keyframes animatedBackground {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 button,
 button:hover {
@@ -75,6 +84,7 @@ button:disabled {
   /* background-color: #ffc1d5; */
   background-color: rgb(252, 118, 162);
   background-image: url('/img/i-like-food.svg');
+  animation: animatedBackground 40s linear infinite;
 }
 .centered-form__form {
   background: rgb(255, 255, 255);
@@ -246,7 +256,7 @@ h5 {
   font-weight: 700;
   margin-bottom: 5px;
 }
-.modal {
+#room-modal {
   position: fixed;
   justify-content: center;
   /* background-color: #ffc1d5; */
@@ -261,7 +271,7 @@ h5 {
   height: 100vh;
   width: 100%;
   opacity: 0.9;
-  /* display: none; */
+  display: none;
 }
 .modal-box {
   z-index: 20;
