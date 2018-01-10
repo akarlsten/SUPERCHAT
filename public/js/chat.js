@@ -19,6 +19,7 @@ function scrollToBottom() {
 
 // Event listeners
 
+// receiving events
 socket.on('connect', function() {
   var params = $.deparam(window.location.search)
 
@@ -36,23 +37,12 @@ socket.on('disconnect', function() {
 })
 
 socket.on('updateUserList', function(users) {
-  // var template = $('#users-template').html()
-  // var initial
-  // var user = users.forEach(function(user) {
-  //   initial = user[0]
-  //   return user
-  // })
-
-  // var html = Mustache.render(template, {
-  //   user: user,
-  //   initial: initial
-  // })
-
-  // $('#users ul').append(html)
   var ul = $('<ul></ul>')
 
   users.forEach(function(user) {
-    var html = `<div class="profile"><span class="initial">${user[0].toUpperCase()}</span></div> ${user}`
+    var html = `<a class="user-link" data-id=${user.id}><div class="profile">
+    <span class="initial">${user.name[0].toUpperCase()}</span>
+    </div> ${user.name}</a>`
     ul.append($('<li></li>').append(html))
   })
 
@@ -101,6 +91,8 @@ socket.on('newLocationMessage', function(message) {
   $('#messages').append(html)
   scrollToBottom()
 })
+
+// sending events
 
 $('#message-form').on('submit', function(e) {
   e.preventDefault()
@@ -217,4 +209,10 @@ $('#room-form').on('submit', function(e) {
   params.room = encodeURIComponent(roomString)
 
   window.location.search = `?name=${params.name}&room=${params.room}`
+})
+
+$('#users li').on('click', function(e) {
+  console.log('farts')
+  e.preventDefault()
+  console.log($(this).data('id'))
 })
