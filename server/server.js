@@ -56,10 +56,30 @@ io.on('connection', socket => {
     var user = users.getUser(socket.id)
 
     if (user && isRealString(message.text)) {
+      // Can probably add / commands here by listening to message.text[]
+      if (message.text[0] === '/') {
+        // send it off somewhere?
+        socket.emit('serverMessage', generateServerMessage('Slash commands coming soon!', '😁'))
+        return callback()
+      }
       io.to(user.room).emit('newMessage', generateMessage(user.name, message.text))
     }
 
     callback()
+  })
+
+  socket.on('privateMessage', (message, callback) => {
+    var user = users.getUser(socket.id)
+
+    if (user && isRealString(message.text)) {
+      // check if its a real message
+      if (user.id === message.target) {
+        //check if youre trying to PM yourself and return the function with an error message
+        return socket.emit('serverMessage', generateServerMessage('You can\'t PM yourself!', '🙄'))
+      } //then actually send it and remove whats in the textbox via callback
+      socket.to(message.target).emit('privateMessage', generateMessage(user.name, message.text))
+      callback()
+    }
   })
 
   socket.on('createLocationMessage', (coords, callback) => {

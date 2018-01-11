@@ -76,6 +76,22 @@ socket.on('newMessage', function(message) {
   scrollToBottom()
 })
 
+socket.on('privateMessage', function(message) {
+  var template = $('#private-message-template').html()
+  var formattedTime = moment(message.createdAt)
+    .locale('sv')
+    .format('HH:mm:ss')
+
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
+
+  $('#messages').append(html)
+  scrollToBottom()
+})
+
 socket.on('newLocationMessage', function(message) {
   var template = $('#location-message-template').html()
   var formattedTime = moment(message.createdAt)
@@ -211,8 +227,21 @@ $('#room-form').on('submit', function(e) {
   window.location.search = `?name=${params.name}&room=${params.room}`
 })
 
-$('#users li').on('click', function(e) {
-  console.log('farts')
+$('#users').on('click', '.user-link', function(e) {
   e.preventDefault()
-  console.log($(this).data('id'))
+  var userId = $(this).data('id')
+  var messageButton = $('#send-message')
+  var messageTextbox = $('[name=message]')
+
+  socket.emit(
+    'privateMessage',
+    {
+      target: userId,
+      text: messageTextbox.val()
+    },
+    function() {
+      messageTextbox.val('')
+    }
+  )
+  messageButton.attr('disabled', 'disabled')
 })

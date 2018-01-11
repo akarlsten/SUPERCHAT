@@ -256,6 +256,9 @@ h5 {
   font-weight: 700;
   margin-bottom: 5px;
 }
+.private-message h4 {
+  color: rgba(255, 16, 96, 1);
+}
 #room-modal {
   position: fixed;
   justify-content: center;
