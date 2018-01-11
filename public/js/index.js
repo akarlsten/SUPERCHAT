@@ -3,9 +3,9 @@ var socket = io('/lobby')
 socket.on('updateRoomList', function(rooms) {
   //hide the entire window if empty
   if (rooms.length === 0) {
-    $('.popular-rooms').hide()
+    $('.popular-rooms').css('visibility', 'hidden')
   } else {
-    $('.popular-rooms').show()
+    $('.popular-rooms').css('visibility', 'visible')
   }
 
   //add popular rooms

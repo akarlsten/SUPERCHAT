@@ -30,11 +30,15 @@
       <ol id="messages" class="chat__messages"></ol>
 
       <div class="chat__footer">
+        <div class="extra-buttons">
+          <button id="send-location">📍🗺️ ⟶ 💬</button>
+          <button>😎 Blopp</button>
+          <button>😥 Spaghett</button>
+        </div>
         <form id="message-form">
           <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-          <button id="send-message" alt="Send" disabled>💬</button>
+          <button id="send-message" alt="Send" disabled>💬 Send</button>
         </form>
-        <button id="send-location">📍🗺️ ⟶ 💬</button>
       </div>
     </div>
   </div>
@@ -82,7 +86,7 @@
         <span>{{createdAt}}</span>
       </div>
       <div class="message__body">
-        <p>{{text}}</p>
+        {{{text}}}
       </div>
     </li>
   </script>
@@ -94,7 +98,7 @@
         <span>Private message | {{createdAt}}</span>
       </div>
       <div class="message__body">
-        <p>{{text}}</p>
+        {{{text}}}
       </div>
     </li>
   </script>

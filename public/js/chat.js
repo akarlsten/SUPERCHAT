@@ -124,6 +124,7 @@ $('#message-form').on('submit', function(e) {
       messageTextbox.val('')
     }
   )
+  $('#message-form input').focus()
   messageButton.attr('disabled', 'disabled')
 })
 
@@ -241,7 +242,7 @@ $('#users').on('click', '.user-link', function(e) {
     },
     function() {
       messageTextbox.val('')
+      messageButton.attr('disabled', 'disabled')
     }
   )
-  messageButton.attr('disabled', 'disabled')
 })

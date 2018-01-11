@@ -1,5 +1,12 @@
 const express = require('express')
 const socketIO = require('socket.io')
+const emoji = require('markdown-it-emoji')
+const twemoji = require('twemoji')
+const mila = require('markdown-it-link-attributes')
+const mili = require('markdown-it-linkify-images')
+const md = require('markdown-it')('zero', {
+  linkify: true
+}).enable(['emphasis', 'linkify', 'image'])
 
 const path = require('path')
 const http = require('http')
@@ -10,13 +17,31 @@ const {
   generateLocationMessage,
   generateServerMessage
 } = require('./utils/message')
-const { isRealString } = require('./utils/validation')
+const { validateString } = require('./utils/validation')
 const { Users } = require('./utils/users')
 
 var app = express()
 var server = http.createServer(app)
 var io = socketIO(server)
 var users = new Users()
+
+//markdown and emoji rendering settings
+md
+  .use(emoji)
+  .use(mili, {
+    target: '_blank',
+    imgClass: 'message-image'
+  })
+  .use(mila, {
+    attrs: {
+      target: '_blank',
+      rel: 'nooponer'
+    }
+  })
+
+md.renderer.rules.emoji = function(token, idx) {
+  return twemoji.parse(token[idx].content)
+}
 
 app.use(express.static(publicPath))
 
@@ -32,7 +57,7 @@ lobby.on('connection', socket => {
 
 io.on('connection', socket => {
   socket.on('join', (params, callback) => {
-    if (!isRealString(params.name) || !isRealString(params.room)) {
+    if (!validateString(params.name) || !validateString(params.room)) {
       return callback('Name and room name are required..')
     }
 
@@ -55,14 +80,18 @@ io.on('connection', socket => {
   socket.on('createMessage', (message, callback) => {
     var user = users.getUser(socket.id)
 
-    if (user && isRealString(message.text)) {
+    if (user && validateString(message.text)) {
       // Can probably add / commands here by listening to message.text[]
       if (message.text[0] === '/') {
-        // send it off somewhere?
+        // send it off somewhere? maybe add it over in utils
         socket.emit('serverMessage', generateServerMessage('Slash commands coming soon!', '😁'))
         return callback()
+      } else if (message.text.substring(0, 2) === 'i!') {
+        //adding a shortcut to the markdown syntax for image links
+        var parsed = message.text.substring(2)
+        message.text = `![](${parsed})`
       }
-      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text))
+      io.to(user.room).emit('newMessage', generateMessage(user.name, md.render(message.text)))
     }
 
     callback()
@@ -71,7 +100,7 @@ io.on('connection', socket => {
   socket.on('privateMessage', (message, callback) => {
     var user = users.getUser(socket.id)
 
-    if (user && isRealString(message.text)) {
+    if (user && validateString(message.text)) {
       // check if its a real message
       if (user.id === message.target) {
         //check if youre trying to PM yourself and return the function with an error message
