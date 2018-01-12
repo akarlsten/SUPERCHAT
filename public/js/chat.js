@@ -17,10 +17,6 @@ function scrollToBottom(extra) {
   }
 }
 
-$('#messages').on('load', '.message-image', function() {
-  scrollToBottom()
-})
-
 // Event listeners
 
 // receiving events
