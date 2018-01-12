@@ -14,9 +14,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "express": "^4.16.2",
     "markdown-it": "^8.4.0",
     "markdown-it-emoji": "^1.4.0",
+    "markdown-it-imsize": "^2.0.1",
     "markdown-it-link-attributes": "^2.0.0",
     "markdown-it-linkify-images": "^1.0.0",
     "moment": "^2.20.1",

@@ -59,7 +59,7 @@ class Users {
     var sortedArray = roomArray.sort((a, b) => {
       return b.users - a.users
     })
-    var splicedArray = sortedArray.splice(0, 5)
+    var splicedArray = sortedArray.splice(0, 5) //display top 5
     return splicedArray
   }
 }

@@ -1,9 +1,11 @@
 const express = require('express')
 const socketIO = require('socket.io')
+const axios = require('axios')
 const emoji = require('markdown-it-emoji')
 const twemoji = require('twemoji')
 const mila = require('markdown-it-link-attributes')
 const mili = require('markdown-it-linkify-images')
+const misi = require('markdown-it-imsize')
 const md = require('markdown-it')('zero', {
   linkify: true
 }).enable(['emphasis', 'linkify', 'image'])
@@ -25,9 +27,11 @@ var server = http.createServer(app)
 var io = socketIO(server)
 var users = new Users()
 
+//TODO: Add canvas drawing, random gif button, random cute dog button
 //markdown and emoji rendering settings
 md
   .use(emoji)
+  .use(misi, { autofill: true })
   .use(mili, {
     target: '_blank',
     imgClass: 'message-image'
@@ -51,7 +55,7 @@ app.get('/', (req, res) => {
 
 //send room updates only to the lobby
 const lobby = io.of('/lobby')
-lobby.on('connection', socket => {
+lobby.on('connection', () => {
   lobby.emit('updateRoomList', users.getRoomlist())
 })
 
@@ -106,7 +110,10 @@ io.on('connection', socket => {
         //check if youre trying to PM yourself and return the function with an error message
         return socket.emit('serverMessage', generateServerMessage('You can\'t PM yourself!', '🙄'))
       } //then actually send it and remove whats in the textbox via callback
-      socket.to(message.target).emit('privateMessage', generateMessage(user.name, message.text))
+      socket
+        .to(message.target)
+        .emit('privateMessage', generateMessage(user.name, md.render(message.text)))
+      socket.emit('privateMessage', generateMessage(message.target.name, md.render(message.text)))
       callback()
     }
   })
@@ -121,6 +128,71 @@ io.on('connection', socket => {
           'newLocationMessage',
           generateLocationMessage(user.name, coords.latitude, coords.longitude)
         )
+    }
+  })
+
+  //fun buttons that fetch fun things
+  socket.on('requestGif', callback => {
+    var user = users.getUser(socket.id)
+    if (user) {
+      var apiKey = 'blYIyZTY0W3gHxXxpCSWcliximKB3esJ' //hide this later :-)
+      axios
+        .get(`https://api.giphy.com/v1/gifs/random?api_key=${apiKey}`)
+        .then(response => {
+          var gifUrl = response.data.data.image_url
+          var gifHeight = response.data.data.image_height
+          var gifWidth = response.data.data.image_width
+
+          socket.emit(
+            'imgMessage',
+            generateMessage(user.name, md.render(`![](${gifUrl} =${gifWidth}x${gifHeight})`))
+          )
+          setTimeout(() => {
+            callback()
+          }, 3000)
+        })
+        .catch(() => {
+          socket.emit(
+            'serverMessage',
+            generateServerMessage('Looks like we can\'t find any GIFs..', '😣')
+          )
+          setTimeout(() => {
+            callback()
+          }, 3000)
+        })
+    }
+  })
+
+  socket.on('requestDog', callback => {
+    var user = users.getUser(socket.id)
+    if (user) {
+      axios
+        .get('https://random.dog/woof.json')
+        .then(response => {
+          var dogUrl = response.data.url
+
+          // we cant handle webms
+          if (
+            dogUrl.substring(dogUrl.length - 4) === 'webm' ||
+            dogUrl.substring(dogUrl.length - 4) === '.mp4'
+          ) {
+            throw 'webm'
+          }
+
+          socket.emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
+          setTimeout(() => {
+            callback()
+          }, 3000)
+        })
+        .catch(() => {
+          socket.emit(
+            'serverMessage',
+            generateServerMessage('Looks like we couldn\'t find a dog..', '😭')
+          )
+          setTimeout(() => {
+            callback()
+          }, 3000)
+        })
     }
   })
 

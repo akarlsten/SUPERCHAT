@@ -231,7 +231,7 @@ h5 {
   font-weight: 700;
 }
 .message-image {
-  max-width: 400px;
+  max-width: 300px;
   max-height: 400px;
 }
 .server-message {
@@ -312,4 +312,41 @@ h5 {
   .chat__footer button {
     margin-right: 0;
   }
+}
+/* Experimental */
+.drawing-box {
+  display: flex;
+  position: absolute;
+  background: #ffffff;
+  border: 2px solid #ff1060;
+  border-radius: 3px;
+  bottom: 5rem;
+  width: 20rem;
+  height: 20rem;
+  left: 20%;
+  right: 50%;
+}
+.drawing-box:after,
+.drawing-box:before {
+  top: 100%;
+  left: 55%;
+  border: solid transparent;
+  content: ' ';
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.drawing-box:after {
+  border-color: rgba(255, 255, 255, 0);
+  border-top-color: #ffffff;
+  border-width: 20px;
+  margin-left: -20px;
+}
+.drawing-box:before {
+  border-color: rgba(255, 16, 96, 0);
+  border-top-color: #ff1060;
+  border-width: 23px;
+  margin-left: -23px;
 }

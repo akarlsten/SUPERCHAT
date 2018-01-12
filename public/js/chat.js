@@ -1,7 +1,7 @@
 var socket = io()
 
 // autoscroll
-function scrollToBottom() {
+function scrollToBottom(extra) {
   //Selectors
   var messages = $('#messages')
   var newMessage = messages.children('li:last-child')
@@ -16,6 +16,10 @@ function scrollToBottom() {
     messages.scrollTop(scrollHeight)
   }
 }
+
+$('#messages').on('load', '.message-image', function() {
+  scrollToBottom()
+})
 
 // Event listeners
 
@@ -108,6 +112,22 @@ socket.on('newLocationMessage', function(message) {
   scrollToBottom()
 })
 
+socket.on('imgMessage', function(message) {
+  var template = $('#image-template').html()
+  var formattedTime = moment(message.createdAt)
+    .locale('sv')
+    .format('HH:mm:ss')
+
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
+
+  $('#messages').append(html)
+  scrollToBottom()
+})
+
 // sending events
 
 $('#message-form').on('submit', function(e) {
@@ -172,6 +192,22 @@ locationButton.on('click', function() {
   )
 })
 
+var gifButton = $('#send-gif')
+gifButton.on('click', function() {
+  gifButton.attr('disabled', 'disabled')
+  socket.emit('requestGif', function() {
+    gifButton.removeAttr('disabled')
+  })
+})
+
+var dogButton = $('#send-dog')
+dogButton.on('click', function() {
+  dogButton.attr('disabled', 'disabled')
+  socket.emit('requestDog', function() {
+    dogButton.removeAttr('disabled')
+  })
+})
+
 //find and set Room, no need to ask the server
 $(document).ready(function() {
   var params = $.deparam(window.location.search)
@@ -228,6 +264,7 @@ $('#room-form').on('submit', function(e) {
   window.location.search = `?name=${params.name}&room=${params.room}`
 })
 
+//private messages
 $('#users').on('click', '.user-link', function(e) {
   e.preventDefault()
   var userId = $(this).data('id')
