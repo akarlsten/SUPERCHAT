@@ -192,7 +192,10 @@ var gifButton = $('#send-gif')
 gifButton.on('click', function() {
   gifButton.attr('disabled', 'disabled')
   socket.emit('requestGif', function() {
-    gifButton.removeAttr('disabled')
+    scrollToBottom()
+    setTimeout(() => {
+      gifButton.removeAttr('disabled')
+    }, 1000)
   })
 })
 
@@ -200,7 +203,10 @@ var dogButton = $('#send-dog')
 dogButton.on('click', function() {
   dogButton.attr('disabled', 'disabled')
   socket.emit('requestDog', function() {
-    dogButton.removeAttr('disabled')
+    scrollToBottom()
+    setTimeout(() => {
+      dogButton.removeAttr('disabled')
+    }, 1000)
   })
 })
 

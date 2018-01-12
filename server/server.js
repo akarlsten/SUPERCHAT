@@ -147,18 +147,14 @@ io.on('connection', socket => {
             'imgMessage',
             generateMessage(user.name, md.render(`![](${gifUrl} =${gifWidth}x${gifHeight})`))
           )
-          setTimeout(() => {
-            callback()
-          }, 3000)
+          callback()
         })
         .catch(() => {
           socket.emit(
             'serverMessage',
             generateServerMessage('Looks like we can\'t find any GIFs..', '😣')
           )
-          setTimeout(() => {
-            callback()
-          }, 3000)
+          callback()
         })
     }
   })
@@ -180,18 +176,14 @@ io.on('connection', socket => {
           }
 
           socket.emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
-          setTimeout(() => {
-            callback()
-          }, 3000)
+          callback()
         })
         .catch(() => {
           socket.emit(
             'serverMessage',
             generateServerMessage('Looks like we couldn\'t find a dog..', '😭')
           )
-          setTimeout(() => {
-            callback()
-          }, 3000)
+          callback()
         })
     }
   })
