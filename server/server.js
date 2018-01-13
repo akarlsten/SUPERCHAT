@@ -70,7 +70,7 @@ io.on('connection', socket => {
       return callback('A user with that name is already in the room..')
     }
 
-    params.room = params.room.toUpperCase()
+    params.room = params.room.toUpperCase().trim()
     socket.join(params.room)
     users.removeUser(socket.id) //remove any previous
     users.addUser(socket.id, params.name, params.room) //add back in
@@ -109,6 +109,7 @@ io.on('connection', socket => {
 
   socket.on('privateMessage', (message, callback) => {
     var user = users.getUser(socket.id)
+    var recipient = users.getUsername(message.target)
 
     if (user && validateString(message.text)) {
       // check if its a real message
@@ -118,8 +119,8 @@ io.on('connection', socket => {
       } //then actually send it and remove whats in the textbox via callback
       socket
         .to(message.target)
-        .emit('privateMessage', generateMessage(user.name, md.render(message.text)))
-      socket.emit('privateMessage', generateMessage(message.target.name, md.render(message.text)))
+        .emit('privateMessage', generateMessage(`${user.name} > You`, md.render(message.text)))
+      socket.emit('privateMessage', generateMessage(`You > ${recipient}`, md.render(message.text)))
       callback()
     }
   })
