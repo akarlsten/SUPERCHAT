@@ -4,7 +4,11 @@ class Users {
   }
 
   addUser(id, name, room) {
-    var user = { id, name, room }
+    var user = {
+      id,
+      name: name.trim(),
+      room
+    }
     this.users.push(user)
     return user
   }
@@ -27,7 +31,18 @@ class Users {
     return namesArray
   }
 
-  getRoomlist() {
+  getUsernames(room) {
+    var users = this.users.filter(user => user.room === room)
+    var namesArray = users.map(user => user.name.toUpperCase())
+    return namesArray
+  }
+
+  getRoomList() {
+    var rooms = this.users.map(user => user.room)
+    return rooms
+  }
+
+  getTopRooms() {
     var rooms = this.users.map(user => user.room)
 
     // tallies up all the rooms and sorts them by users

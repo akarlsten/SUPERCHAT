@@ -71,11 +71,14 @@ $('[name="room"]').on('input', function() {
 
 $('form').on('submit', function() {
   Cookies.set('screenname', $('[name=name]').val())
+  Cookies.set('roomname', $('[name=room]').val())
 })
 
 $(document).ready(function() {
   if (Cookies.get('screenname')) {
     $('[name=name]').val(Cookies.get('screenname'))
+    $('[name=room]').val(Cookies.get('roomname'))
     $('[name=room]').focus()
+    formValidator()
   }
 })

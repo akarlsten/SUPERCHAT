@@ -22,12 +22,11 @@ function scrollToBottom(extra) {
 // receiving events
 socket.on('connect', function() {
   var params = $.deparam(window.location.search)
-
+  params.room = params.room.toUpperCase()
   socket.emit('join', params, function(err) {
     if (err) {
       alert(err)
       window.location.href = '/'
-    } else {
     }
   })
 })
@@ -216,7 +215,7 @@ $(document).ready(function() {
   var template = $('#room-template').html()
 
   var html = Mustache.render(template, {
-    room: params.room
+    room: params.room.toUpperCase()
   })
 
   $('#room').append(html)

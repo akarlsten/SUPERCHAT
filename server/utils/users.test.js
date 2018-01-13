@@ -96,7 +96,7 @@ describe('Users', () => {
   })
 
   it('should list all rooms', () => {
-    var roomList = users.getRoomlist()
+    var roomList = users.getTopRooms()
 
     expect(roomList).toEqual([
       {

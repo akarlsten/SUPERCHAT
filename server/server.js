@@ -27,7 +27,7 @@ var server = http.createServer(app)
 var io = socketIO(server)
 var users = new Users()
 
-//TODO: Add canvas drawing, random gif button, random cute dog button
+//TODO: Add canvas drawing
 //markdown and emoji rendering settings
 md
   .use(emoji)
@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 //send room updates only to the lobby
 const lobby = io.of('/lobby')
 lobby.on('connection', () => {
-  lobby.emit('updateRoomList', users.getRoomlist())
+  lobby.emit('updateRoomList', users.getTopRooms())
 })
 
 io.on('connection', socket => {
@@ -65,11 +65,17 @@ io.on('connection', socket => {
       return callback('Name and room name are required..')
     }
 
+    var upperName = params.name.toUpperCase().trim()
+    if (users.getUsernames(params.room).includes(upperName)) {
+      return callback('A user with that name is already in the room..')
+    }
+
+    params.room = params.room.toUpperCase()
     socket.join(params.room)
     users.removeUser(socket.id) //remove any previous
     users.addUser(socket.id, params.name, params.room) //add back in
 
-    lobby.emit('updateRoomList', users.getRoomlist()) //send to lobby when someone joins a room
+    lobby.emit('updateRoomList', users.getTopRooms()) //send to lobby when someone joins a room
 
     io.to(params.room).emit('updateUserList', users.getUserlist(params.room)) // find and send users
 
@@ -190,7 +196,7 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     var user = users.removeUser(socket.id)
-    lobby.emit('updateRoomList', users.getRoomlist()) //send to lobby when someone disconnects
+    lobby.emit('updateRoomList', users.getTopRooms()) //send to lobby when someone disconnects
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserlist(user.room))
       io.to(user.room).emit('serverMessage', generateServerMessage(`${user.name} left!`, '😯'))

@@ -27,13 +27,13 @@
     </div>
 
     <div class="chat__main">
-      <!-- <div class="drawing-box">testestestestestest
-      </div> -->
+      <!-- <div class="drawing-box"></div> -->
       <ol id="messages" class="chat__messages"></ol>
 
       <div class="chat__footer">
         <div class="extra-buttons">
-          <button id="send-location">📍🗺️ ⟶ 💬</button>
+          <button id="send-location">📍🗺️</button>
+
           <button id="send-gif">😎 GIF</button>
           <button id="send-dog">🐶 Woof</button>
         </div>
@@ -108,7 +108,7 @@
         <li class="message">
           <div class="message__title">
             <h4>{{from}}</h4>
-            <span>{{createdAt}}</span>
+            <span>GIF | {{createdAt}}</span>
           </div>
           <div class="message__body">
             {{{text}}} <a href="https://giphy.com" target="_blank"><img class="message-image" src="/img/giphy.png"></a>

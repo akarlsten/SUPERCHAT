@@ -296,6 +296,21 @@ h5 {
 .emoji {
   height: 1.3em;
 }
+
+/* Experimental */
+.drawing-box {
+  display: none;
+  position: absolute;
+  background: #000;
+  border: 2px solid #ff1060;
+  border-radius: 3px;
+  bottom: 5rem;
+  width: 20rem;
+  height: 20rem;
+  left: 17%;
+  right: 50%;
+}
+
 @media (max-width: 600px) {
   * {
     font-size: 1rem;
@@ -312,41 +327,15 @@ h5 {
   .chat__footer button {
     margin-right: 0;
   }
-}
-/* Experimental */
-.drawing-box {
-  display: flex;
-  position: absolute;
-  background: #ffffff;
-  border: 2px solid #ff1060;
-  border-radius: 3px;
-  bottom: 5rem;
-  width: 20rem;
-  height: 20rem;
-  left: 20%;
-  right: 50%;
-}
-.drawing-box:after,
-.drawing-box:before {
-  top: 100%;
-  left: 55%;
-  border: solid transparent;
-  content: ' ';
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
-
-.drawing-box:after {
-  border-color: rgba(255, 255, 255, 0);
-  border-top-color: #ffffff;
-  border-width: 20px;
-  margin-left: -20px;
-}
-.drawing-box:before {
-  border-color: rgba(255, 16, 96, 0);
-  border-top-color: #ff1060;
-  border-width: 23px;
-  margin-left: -23px;
+  .drawing-box {
+    position: absolute;
+    background: #000;
+    border: 2px solid #ff1060;
+    border-radius: 3px;
+    bottom: 8rem;
+    width: 15rem;
+    height: 15rem;
+    left: 14%;
+    right: 50%;
+  }
 }
