@@ -9,6 +9,10 @@ const misi = require('markdown-it-imsize')
 const md = require('markdown-it')('zero', {
   linkify: true
 }).enable(['emphasis', 'linkify', 'image'])
+const low = require('lowdb')
+const FileAsync = require('lowdb/adapters/FileAsync')
+const adapter = new FileAsync('db.json')
+const db = low(adapter)
 
 const path = require('path')
 const http = require('http')
@@ -21,6 +25,7 @@ const {
 } = require('./utils/message')
 const { validateString } = require('./utils/validation')
 const { Users } = require('./utils/users')
+const { initializeDb, saveToDb, latestMessages } = require('./utils/database-methods')
 
 var app = express()
 var server = http.createServer(app)
@@ -28,6 +33,7 @@ var io = socketIO(server)
 var users = new Users()
 
 //TODO: Add canvas drawing
+
 //markdown and emoji rendering settings
 md
   .use(emoji)
@@ -47,6 +53,10 @@ md.renderer.rules.emoji = function(token, idx) {
   return twemoji.parse(token[idx].content)
 }
 
+// database
+initializeDb()
+
+//express and socket.io server
 app.use(express.static(publicPath))
 
 app.get('/', (req, res) => {
@@ -70,7 +80,7 @@ io.on('connection', socket => {
       return callback('A user with that name is already in the room..')
     }
 
-    params.room = params.room.toUpperCase().trim()
+    params.room = params.room.toUpperCase().trim() //fix this
     socket.join(params.room)
     users.removeUser(socket.id) //remove any previous
     users.addUser(socket.id, params.name, params.room) //add back in
@@ -80,6 +90,14 @@ io.on('connection', socket => {
     io.to(params.room).emit('updateUserList', users.getUserlist(params.room)) // find and send users
 
     socket.emit('serverMessage', generateServerMessage('Welcome to 💥SUPERCHAT!', '🤗'))
+
+    //send the last 5 messages from channel to new users
+    latestMessages(params.room).forEach(message => {
+      io
+        .to(message.room)
+        .emit('newMessage', generateMessage(message.name, md.render(message.message)))
+    })
+
     socket.broadcast
       .to(params.room)
       .emit('serverMessage', generateServerMessage(`${params.name} joined!`, '😲'))
@@ -101,6 +119,8 @@ io.on('connection', socket => {
         var parsed = message.text.substring(2)
         message.text = `![](${parsed})`
       }
+
+      saveToDb(user.name, message.text, user.room)
       io.to(user.room).emit('newMessage', generateMessage(user.name, md.render(message.text)))
     }
 
@@ -117,6 +137,7 @@ io.on('connection', socket => {
         //check if youre trying to PM yourself and return the function with an error message
         return socket.emit('serverMessage', generateServerMessage('You can\'t PM yourself!', '🙄'))
       } //then actually send it and remove whats in the textbox via callback
+
       socket
         .to(message.target)
         .emit('privateMessage', generateMessage(`${user.name} > You`, md.render(message.text)))
@@ -150,6 +171,7 @@ io.on('connection', socket => {
           var gifHeight = response.data.data.image_height
           var gifWidth = response.data.data.image_width
 
+          saveToDb(user.name, `![](${gifUrl})`, user.room)
           socket.emit(
             'imgMessage',
             generateMessage(user.name, md.render(`![](${gifUrl} =${gifWidth}x${gifHeight})`))
@@ -182,6 +204,7 @@ io.on('connection', socket => {
             throw 'webm'
           }
 
+          saveToDb(user.name, `![](${dogUrl})`, user.room)
           socket.emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
           callback()
         })

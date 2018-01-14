@@ -22,7 +22,7 @@ function scrollToBottom(extra) {
 // receiving events
 socket.on('connect', function() {
   var params = $.deparam(window.location.search)
-  params.room = params.room.toUpperCase()
+  params.room = params.room.toUpperCase() //fix this
   socket.emit('join', params, function(err) {
     if (err) {
       alert(err)
