@@ -215,7 +215,7 @@ io.on('connection', socket => {
           saveToDb(user.name, `![](${dogUrl})`, user.room)
           io
             .to(user.room)
-            .emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
+            .emit('dogMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
           callback()
         })
         .catch(() => {

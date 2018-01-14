@@ -1,7 +1,7 @@
 var socket = io()
 
 // autoscroll
-function scrollToBottom(extra) {
+function scrollToBottom() {
   //Selectors
   var messages = $('#messages')
   var newMessage = messages.children('li:last-child')
@@ -122,7 +122,27 @@ socket.on('imgMessage', function(message) {
   })
 
   $('#messages').append(html)
-  scrollToBottom()
+  setTimeout(function() {
+    scrollToBottom()
+  }, 300)
+})
+
+socket.on('dogMessage', function(message) {
+  var template = $('#message-template').html()
+  var formattedTime = moment(message.createdAt)
+    .locale('sv')
+    .format('HH:mm:ss')
+
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
+
+  $('#messages').append(html)
+  setTimeout(function() {
+    scrollToBottom()
+  }, 300)
 })
 
 socket.on('changeRoom', function(room) {
