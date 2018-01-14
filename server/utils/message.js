@@ -8,6 +8,14 @@ var generateMessage = (from, text) => {
   }
 }
 
+var generateOldMessage = (from, text, createdAt) => {
+  return {
+    from,
+    text,
+    createdAt
+  }
+}
+
 var generateServerMessage = (text, emoji) => {
   return { text, emoji }
 }
@@ -20,4 +28,9 @@ var generateLocationMessage = (from, latitude, longitude) => {
   }
 }
 
-module.exports = { generateMessage, generateLocationMessage, generateServerMessage }
+module.exports = {
+  generateMessage,
+  generateLocationMessage,
+  generateServerMessage,
+  generateOldMessage
+}

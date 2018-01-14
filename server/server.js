@@ -21,7 +21,8 @@ const port = process.env.PORT || 3000
 const {
   generateMessage,
   generateLocationMessage,
-  generateServerMessage
+  generateServerMessage,
+  generateOldMessage
 } = require('./utils/message')
 const { validateString } = require('./utils/validation')
 const { Users } = require('./utils/users')
@@ -95,7 +96,10 @@ io.on('connection', socket => {
     latestMessages(params.room).forEach(message => {
       io
         .to(message.room)
-        .emit('newMessage', generateMessage(message.name, md.render(message.message)))
+        .emit(
+          'newMessage',
+          generateOldMessage(message.name, md.render(message.message), message.created)
+        )
     })
 
     socket.broadcast
