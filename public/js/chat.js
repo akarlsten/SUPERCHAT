@@ -39,7 +39,9 @@ socket.on('updateUserList', function(users) {
   var ul = $('<ul></ul>')
 
   users.forEach(function(user) {
-    var html = `<a class="user-link" data-id=${user.id}><div class="profile">
+    var html = `<a title="Write a message below and click to send a PM to this user." class="user-link" data-id=${
+      user.id
+    }><div class="profile">
     <span class="initial">${user.name[0].toUpperCase()}</span>
     </div> ${user.name}</a>`
     ul.append($('<li></li>').append(html))
@@ -123,6 +125,15 @@ socket.on('imgMessage', function(message) {
   scrollToBottom()
 })
 
+socket.on('changeRoom', function(room) {
+  console.log(room)
+  var params = $.deparam(window.location.search)
+
+  params.room = encodeURIComponent(room)
+
+  window.location.search = `?name=${params.name}&room=${params.room}`
+})
+
 // sending events
 
 $('#message-form').on('submit', function(e) {
@@ -170,18 +181,18 @@ locationButton.on('click', function() {
     return alert('Your browser doesn\'t support geolocation')
   }
 
-  locationButton.attr('disabled', 'disabled').text('📍🗺️ ⏳ 💬')
+  locationButton.attr('disabled', 'disabled').text('⏳🗺️')
 
   navigator.geolocation.getCurrentPosition(
     function(position) {
-      locationButton.removeAttr('disabled').text('📍🗺️ ⟶ 💬')
+      locationButton.removeAttr('disabled').text('📍🗺️')
       socket.emit('createLocationMessage', {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       })
     },
     function() {
-      locationButton.removeAttr('disabled', null).text('📍🗺️ ⟶ 💬')
+      locationButton.removeAttr('disabled', null).text('📍🗺️')
       alert('Unable to fetch location..')
     }
   )

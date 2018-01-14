@@ -1,23 +1,23 @@
 var expect = require('expect')
-var { isRealString } = require('./validation')
+var { validateString } = require('./validation')
 
-describe('isRealString', () => {
+describe('validateString', () => {
   it('should reject non-string values', () => {
-    var nullString = isRealString(null)
-    var numString = isRealString(1)
-    var boolString = isRealString(true)
+    var nullString = validateString(null)
+    var numString = validateString(1)
+    var boolString = validateString(true)
 
     expect(nullString && numString && boolString).toBe(false)
   })
 
   it('should reject string with only spaces', () => {
-    var spaceString = isRealString('   ')
+    var spaceString = validateString('   ')
 
     expect(spaceString).toBe(false)
   })
 
   it('should allow string with non-space characters', () => {
-    var weirdString = isRealString(' &!"#&/%¤/')
+    var weirdString = validateString(' &!"#&/%¤/')
 
     expect(weirdString).toBe(true)
   })

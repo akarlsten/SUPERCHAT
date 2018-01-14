@@ -84,15 +84,15 @@ describe('Users', () => {
   })
 
   it('should get a list of users from Roombo', () => {
-    var userList = users.getUserlist('Roombo')
+    var userList = users.getUsernames('Roombo')
 
-    expect(userList).toEqual(['Adam', 'Adamo'])
+    expect(userList).toEqual(['ADAM', 'ADAMO'])
   })
 
   it('should get a list of users from Roombox', () => {
-    var userList = users.getUserlist('Roombox')
+    var userList = users.getUsernames('Roombox')
 
-    expect(userList).toEqual(['Adami'])
+    expect(userList).toEqual(['ADAMI'])
   })
 
   it('should list all rooms', () => {

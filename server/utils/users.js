@@ -25,6 +25,14 @@ class Users {
     return this.users.filter(user => user.id === id)[0]
   }
 
+  getUserId(name, room) {
+    var users = this.users.filter(user => user.room === room)
+    var user = users.filter(user => user.name.toUpperCase() === name)[0]
+    if (user) {
+      return user.id
+    }
+  }
+
   getUsername(id) {
     var user = this.users.filter(user => user.id === id)[0]
     return user.name

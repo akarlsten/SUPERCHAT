@@ -10,8 +10,8 @@ const md = require('markdown-it')('zero', {
   linkify: true
 }).enable(['emphasis', 'linkify', 'image'])
 const low = require('lowdb')
-const FileAsync = require('lowdb/adapters/FileAsync')
-const adapter = new FileAsync('db.json')
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('db.json')
 const db = low(adapter)
 
 const path = require('path')
@@ -27,6 +27,7 @@ const {
 const { validateString } = require('./utils/validation')
 const { Users } = require('./utils/users')
 const { initializeDb, saveToDb, latestMessages } = require('./utils/database-methods')
+const { slashHandler } = require('./utils/slashhandler')
 
 var app = express()
 var server = http.createServer(app)
@@ -114,9 +115,10 @@ io.on('connection', socket => {
 
     if (user && validateString(message.text)) {
       // Can probably add / commands here by listening to message.text[]
-      if (message.text[0] === '/') {
+      if (message.text.substring(0, 1) === '/') {
         // send it off somewhere? maybe add it over in utils
-        socket.emit('serverMessage', generateServerMessage('Slash commands coming soon!', '😁'))
+        slashHandler(io, users, md, socket, message.text)
+
         return callback()
       } else if (message.text.substring(0, 2) === 'i!') {
         //adding a shortcut to the markdown syntax for image links
@@ -150,7 +152,7 @@ io.on('connection', socket => {
     }
   })
 
-  socket.on('createLocationMessage', (coords, callback) => {
+  socket.on('createLocationMessage', coords => {
     var user = users.getUser(socket.id)
 
     if (user) {
@@ -176,10 +178,12 @@ io.on('connection', socket => {
           var gifWidth = response.data.data.image_width
 
           saveToDb(user.name, `![](${gifUrl})`, user.room)
-          socket.emit(
-            'imgMessage',
-            generateMessage(user.name, md.render(`![](${gifUrl} =${gifWidth}x${gifHeight})`))
-          )
+          io
+            .to(user.room)
+            .emit(
+              'imgMessage',
+              generateMessage(user.name, md.render(`![](${gifUrl} =${gifWidth}x${gifHeight})`))
+            )
           callback()
         })
         .catch(() => {
@@ -209,7 +213,9 @@ io.on('connection', socket => {
           }
 
           saveToDb(user.name, `![](${dogUrl})`, user.room)
-          socket.emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
+          io
+            .to(user.room)
+            .emit('newMessage', generateMessage(user.name, md.render(`![](${dogUrl})`)))
           callback()
         })
         .catch(() => {

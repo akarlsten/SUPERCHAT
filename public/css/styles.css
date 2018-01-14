@@ -25,10 +25,12 @@ button:hover {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Lato', HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', 'Inconsolata',
+  font-family: 'Varela Round', HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', 'Inconsolata',
     Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-weight: 300;
   font-size: 0.95rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 input {
   border-radius: 3px;
@@ -38,11 +40,16 @@ ul {
   list-style-position: inside;
 }
 h3 {
+  font-family: 'Lato', sans-serif;
   font-weight: 600;
   text-align: center;
   font-size: 1.3rem;
 }
+h4 {
+  font-family: 'Lato', sans-serif;
+}
 h5 {
+  font-family: 'Lato', sans-serif;
   font-weight: 600;
   text-align: center;
   font-size: 1.1rem;
@@ -97,6 +104,9 @@ button:disabled {
   font-weight: 600;
   display: block;
   margin-bottom: 7px;
+}
+.commands {
+  margin-top: 10px;
 }
 .form-field input,
 .form-field select {
@@ -216,12 +226,14 @@ h5 {
   font-size: 1.2rem;
 }
 .message__title span {
+  font-family: 'Lato', sans-serif;
   color: #999;
 }
 .message__body p,
 .message__body em,
 .message__body strong,
 .message__body a {
+  font-family:
   font-size: 1.1rem;
 }
 .message__body a {
@@ -239,6 +251,7 @@ h5 {
   padding: 0;
 }
 .server-message-text {
+  font-family: 'Lato', sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
   color: rgba(255, 16, 96, 1);
@@ -296,7 +309,9 @@ h5 {
 .emoji {
   height: 1.3em;
 }
-
+.user-link {
+  font-family: 'Lato', sans-serif;
+}
 /* Experimental */
 .drawing-box {
   display: none;
