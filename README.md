@@ -2,6 +2,8 @@
 
 Live at: https://frozen-sands-32597.herokuapp.com/
 
+![](https://i.imgur.com/ikwxS6x.png)
+
 ### Info
 
 Originally made as part of [The Complete Node.js Developer Course (2nd Edition)](https://www.udemy.com/the-complete-nodejs-developer-course-2/) by Andrew Mead on Udemy.
