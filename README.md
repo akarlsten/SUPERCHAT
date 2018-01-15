@@ -4,11 +4,16 @@ Live at: https://frozen-sands-32597.herokuapp.com/
 
 ![](https://i.imgur.com/ikwxS6x.png)
 
+### Install
+
+If you want to install and run this locally you should be able to just clone the repo and run `npm install`.
+Start the server with `node server/server.js` and then visit http://localhost:3000 in your browser!
+
 ### Info
 
 Originally made as part of [The Complete Node.js Developer Course (2nd Edition)](https://www.udemy.com/the-complete-nodejs-developer-course-2/) by Andrew Mead on Udemy.
 
-Things added since the barebones application from the course:
+Things added since the somewhat barebones application from the course:
 
 * A more playful and cohesive theme, lots of emojis! 😄
 * Markdown and Twemoji support for chat messages. (via markdown-it)
