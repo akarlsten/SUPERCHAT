@@ -146,7 +146,6 @@ socket.on('dogMessage', function(message) {
 })
 
 socket.on('changeRoom', function(room) {
-  console.log(room)
   var params = $.deparam(window.location.search)
 
   params.room = encodeURIComponent(room)

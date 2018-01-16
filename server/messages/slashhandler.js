@@ -1,13 +1,8 @@
-const {
-  generateMessage,
-  generateLocationMessage,
-  generateServerMessage,
-  generateOldMessage
-} = require('./message')
+const { generateMessage, generateServerMessage } = require('./message')
 
-var slashHandler = (io, users, md, socket, message) => {
+var slashHandler = (io, users, md, socket, originalmessage) => {
   var user = users.getUser(socket.id)
-  message = message.substring(1)
+  var message = originalmessage.substring(1)
   var messageArray = message.split(' ')
   var command = messageArray[0]
   var pmName = messageArray[1]
@@ -45,6 +40,7 @@ var slashHandler = (io, users, md, socket, message) => {
     var roomTarget = messageArray.join(' ')
     socket.emit('changeRoom', roomTarget)
     break
+
   default:
     return socket.emit('serverMessage', generateServerMessage('Unrecognized command!', '🙄'))
   }
